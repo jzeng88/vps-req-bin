@@ -8,7 +8,12 @@ const { Client } = require("pg");
 app.get("/", async (req, res) => {
   let requests = [];
 
-  const client = new Client({ database: 'postgres://justin:justin@localhost:5432/requestbindb' });
+  const client = new Client({ 
+    database: 'postgres://justin:justin@localhost:5432/requestbindb',
+    user: "justin",
+    password: "justin"
+  });
+
   await client.connect();
   
   const result = await client.query('SELECT * FROM requests;');
@@ -25,7 +30,12 @@ app.get("/", async (req, res) => {
 app.post("/", async (req, res) => {
   let headers = JSON.stringify(req.rawHeaders);
 
-  const client = new Client({ database: 'postgres://justin:justin@localhost:5432/requestbindb' });
+    const client = new Client({ 
+    database: 'postgres://justin:justin@localhost:5432/requestbindb',
+    user: "justin",
+    password: "justin"
+  });
+  
   await client.connect();
   await client.query(`INSERT INTO requests (headers) VALUES ('${headers}')`);
   await client.end();
