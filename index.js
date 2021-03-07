@@ -40,7 +40,7 @@ app.post("/", async (req, res) => {
   await client.query(`INSERT INTO requests (headers) VALUES ('${headers}')`);
   await client.end();
 
-  res.status(200);
+  res.status(200).send('ASDF');
 });
 
 
