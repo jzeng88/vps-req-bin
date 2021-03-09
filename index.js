@@ -13,8 +13,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:randomkey", async (req, res) => {
-  console.log(__dirname+'/.env');
-
   let randomKey = req.params.randomkey;
 
   const client = new Client({ 
