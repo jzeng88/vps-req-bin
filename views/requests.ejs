@@ -8,9 +8,24 @@
   <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
+
 <ul>
   <% requests.forEach(request => { %>
-    <li><%= request.headers %></li>
+    <li>
+      <h6><%= JSON.stringify(request.date_created) %></h6>
+      <div>
+        <p>This is the headers:</p>
+        <dl>
+            <% Object.keys(request.headers).forEach(header => { %>
+              <p><strong><%= header %>: </strong><%= request.headers[header] %></p>
+            <% }) %>
+        </dl>    
+      </div>
+      <div>
+        <p>This is the body:</p>
+        <%= JSON.stringify(request.body) %>
+      </div>
+    </li>
   <% }) %>
 </ul>
 </body>
