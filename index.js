@@ -32,7 +32,7 @@ app.get("/:randomkey", async (req, res) => {
   if (result.rowCount > 0) {
     res.status(200).render('requests', {requests:result.rows});
   } else {
-    res.status(200).render('bin_nothing', {url: `http://${process.env.HOST}:${process.env.PORT}/r/${randomKey}`});
+    res.status(200).render('bin_nothing', {url: `http://${process.env.HOST}/r/${randomKey}`});
   }
 });
 
