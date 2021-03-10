@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <title>Seal Bin</title>
+</head>
+<body>
+	<div>
+  <nav class="bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
+          </div>
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+              <a href="#" class="text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium">New Bin</a>
+
+              <a href="#" class="bg-gray-900 text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Requests</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu, show/hide based on menu state. -->
+    <div class="md:hidden" id="mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+        <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">New Bin</a>
+
+        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Requests</a>
+      </div>
+      
+      </div>
+    </div>
+  </nav>
+
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl font-bold text-gray-900">
+        Your Bin
+      </h1>
+      <div class="inline">
+      	
+      	<svg class="h-5 w-5 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+		  <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+		  <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+		</svg>
+		<input class="w-1/2" value="http://165.232.130.72/r/17819624c97"></input>
+      </div>
+    </div>
+  </header>
+</div>
+ <div class="flex flex-col">
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+
+          <!-- table columns -->
+
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Request
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Headers
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Body
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+
+            <!-- table rows -->
+
+            <% requests.forEach(request => { %>
+
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-start">
+                    <div class="ml-4">
+                    	<!-- Add timestamp here -->
+                      <div class="text-sm font-medium text-gray-900">
+                        <%= JSON.stringify(request.date_created) %>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <!-- Add parsed headers list here -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <% Object.keys(request.headers).forEach(header => { %>
+                    <div class="text-sm text-gray-900"><strong><%= header %>: </strong> <%= request.headers[header] %></div>
+                  <% }) %>
+                </td>
+                <td class="px-6 py-4 whitespace-wrap">
+                    <%= JSON.stringify(request.body) %>
+                </td>
+              </tr>
+
+              <% }) %>
+
+            <!-- More items... -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
