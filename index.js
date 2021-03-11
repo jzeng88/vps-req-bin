@@ -1,6 +1,9 @@
 require('dotenv').config({path:__dirname+'/.env'})
 const express = require("express");
 const app = express();
+const http = require("http").Server(app);
+const io = require("socket.io")(http);
+
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
@@ -44,8 +47,13 @@ app.post("/r/:randomkey", async (req, res) => {
   await client.connect();
   let randomKeyId = await client.query(`SELECT id FROM identifier WHERE random_key = '${randomKey}'`);
   
-  await client.query(`INSERT INTO requests (headers, random_key_id, body) VALUES ('${headers}', ${randomKeyId.rows[0].id}, '${JSON.stringify(req.body)}')`);
+  let newReqId = (await client.query(`INSERT INTO requests (headers, random_key_id, body) VALUES ('${headers}', ${randomKeyId.rows[0].id}, '${JSON.stringify(req.body)}') RETURNING id`)).rows[0].id;
+
+  let result = await client.query(`SELECT headers, body, date_created FROM requests WHERE id = ${newReqId}`);
+
   await client.end();
+  console.log(result.rows);
+  // io.emit("socket data", result.rows[0]);
 
   res.status(200).send('ASDF');
 });
