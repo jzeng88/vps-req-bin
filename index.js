@@ -9,7 +9,7 @@ app.use(express.json());
 const { Client } = require("pg");
 
 app.get("/", (req, res) => {
-  res.status(200).render('index');
+  res.status(200).render('title');
 });
 
 app.get("/:randomkey", async (req, res) => {
@@ -27,11 +27,7 @@ app.get("/:randomkey", async (req, res) => {
 
   await client.end();
 
-  if (result.rowCount > 0) {
-    res.status(200).render('requests', {requests:result.rows});
-  } else {
-    res.status(200).render('bin_nothing', {url: `http://${process.env.HOST}/r/${randomKey}`});
-  }
+  res.status(200).render('table', {requests:result.rows, url: `http://${process.env.HOST}/r/${randomKey}`});
 });
 
 
