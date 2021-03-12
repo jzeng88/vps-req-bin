@@ -1,0 +1,21 @@
+<tr>
+  <td class="px-6 py-4 whitespace-nowrap">
+    <div class="flex items-start">
+      <div class="ml-4">
+        <!-- Add timestamp here -->
+        <div class="text-sm font-medium text-gray-900">
+          <%= request.date_created.toLocaleDateString('en-US', {hour: '2-digit', minute:'2-digit'}) %>
+        </div>
+      </div>
+    </div>
+  </td>
+  <!-- Add parsed headers list here -->
+  <td class="px-6 py-4 whitespace-nowrap">
+    <% Object.keys(request.headers).forEach(header => { %>
+      <div class="text-sm text-gray-900"><strong><%= header %>: </strong> <%= request.headers[header] %></div>
+    <% }) %>
+  </td>
+  <td class="px-6 py-4 whitespace-wrap">
+      <%= JSON.stringify(request.body) %>
+  </td>
+</tr>

@@ -3,11 +3,15 @@ const express = require("express");
 const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
+const ejs = require('ejs');
 
-app.use(express.static('public'));
+let userBins = {};
+
 app.set('view engine', 'ejs');
 
+app.use(express.static('public'));
 app.use(express.json());
+app.use('/scripts', express.static(__dirname + '/node_modules/socket.io/client-dist/'));
 
 const { Client } = require("pg");
 
@@ -18,6 +22,8 @@ app.get("/", (req, res) => {
 app.get("/:randomkey", async (req, res) => {
   let randomKey = req.params.randomkey;
 
+  userBins[`/${randomKey}`] = randomKey;
+
   const client = new Client({ 
     connectionString: process.env.DB_CONNECTIONSTRING,
     user: process.env.USER,
@@ -26,12 +32,28 @@ app.get("/:randomkey", async (req, res) => {
 
   await client.connect();
 
-  let result = await client.query(`SELECT requests.headers, requests.body, requests.date_created FROM requests JOIN identifier ON requests.random_key_id = identifier.id WHERE identifier.random_key = '${randomKey}'`);
+  let result = await client.query(`SELECT requests.headers, requests.body, requests.date_created FROM requests JOIN identifier ON requests.random_key_id = identifier.id WHERE identifier.random_key = '${randomKey}' ORDER BY requests.date_created DESC`);
 
   await client.end();
 
   res.status(200).render('table', {requests:result.rows, url: `http://${process.env.HOST}/r/${randomKey}`});
 });
+
+io.on('connection', (socket) => {
+  console.log('connected');
+  let binKey;
+  socket.on('binUrl', (url) => {
+    let room = userBins[url];
+    binKey = url;
+
+    socket.join(room);
+  })
+
+  socket.on('disconnect', () => {
+    console.log('disconnected');
+    delete userBins[binKey]
+  })
+})
 
 
 app.post("/r/:randomkey", async (req, res) => {
@@ -52,8 +74,13 @@ app.post("/r/:randomkey", async (req, res) => {
   let result = await client.query(`SELECT headers, body, date_created FROM requests WHERE id = ${newReqId}`);
 
   await client.end();
-  console.log(result.rows);
-  // io.emit("socket data", result.rows[0]);
+  
+  let room = userBins[`/${randomKey}`]
+  let file = __dirname + '/views/table-partial.ejs';
+
+  ejs.renderFile(file, {request: result.rows[0]}, function(err, str){
+    io.in(room).emit("message", str);
+  });
 
   res.status(200).send('ASDF');
 });
@@ -74,6 +101,6 @@ app.post("/create", async (req, res) => {
   res.status(200).send(randomKey);
 })
 
-app.listen(process.env.PORT, () => {
+http.listen(process.env.PORT, () => {
   console.log(`Example app listening at port:${process.env.PORT}`);
 });

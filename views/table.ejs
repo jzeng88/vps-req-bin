@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <script src="/javascript/copy.js" defer></script>
+  <script src="/scripts/socket.io.js" defer></script>
+  <script src="/javascript/websocket.js" defer></script>
+  
   <title>Seal Bin</title>
 </head>
 <body>
@@ -47,11 +51,11 @@
       </h1>
       <div class="inline">
       	
-      	<svg class="h-5 w-5 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      	<svg class="h-5 w-5 inline" id="copy_url" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
 		  <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
 		  <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
 		</svg>
-		<input class="w-1/2" value=<%= url %>></input>
+		<input class="w-1/2" id="url" value=<%= url %>></input>
       </div>
     </div>
   </header>
@@ -89,7 +93,7 @@
                     <div class="ml-4">
                     	<!-- Add timestamp here -->
                       <div class="text-sm font-medium text-gray-900">
-                        <%= JSON.stringify(request.date_created) %>
+                        <%= request.date_created.toLocaleDateString('en-US', {hour: '2-digit', minute:'2-digit'}) %>
                       </div>
                     </div>
                   </div>
