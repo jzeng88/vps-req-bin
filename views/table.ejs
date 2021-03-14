@@ -3,63 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <link href="/stylesheets/tailwind.css" rel="stylesheet">
+  <link href="/stylesheets/style.css" rel="stylesheet">
   <script src="/javascript/copy.js" defer></script>
+  <script src="/javascript/seal-animation.js" defer></script>
   <script src="/scripts/socket.io.js" defer></script>
   <script src="/javascript/websocket.js" defer></script>
   
   <title>Seal Bin</title>
 </head>
 <body>
-	<div>
-  <nav class="bg-gray-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <div class="flex items-center">
-          <div class="flex-shrink-0">
-            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
-          </div>
-          <div class="hidden md:block">
-            <div class="ml-10 flex items-baseline space-x-4">
-              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-              <a href="/" class="text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium">New Bin</a>
 
-              <a class="bg-gray-900 text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Requests</a>
+  <div class="loader_bg">
+    <!-- bin credit to Mint Shirt -->
+    <!-- seal credit to Dorian Dawance -->
+    <img class="top-bin" src="/images/top-bin.png">
+    <img class="bot-bin" src="/images/bot-bin.png">
+    <img class="seal-approval" src="/images/seal-approval.png">
+  </div>
+
+	<div id="content">
+    <nav class="bg-gray-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
+            </div>
+            <div class="hidden md:block">
+              <div class="ml-10 flex items-baseline space-x-4">
+                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                <a href="/" class="text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium">New Bin</a>
+
+                <a class="bg-gray-900 text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Requests</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Mobile menu, show/hide based on menu state. -->
-    <div class="md:hidden" id="mobile-menu">
-      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-        <a href="/" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">New Bin</a>
+      <!-- Mobile menu, show/hide based on menu state. -->
+      <div class="md:hidden" id="mobile-menu">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+          <a href="/" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">New Bin</a>
 
-        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Requests</a>
+          <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Requests</a>
+        </div>
+        
+        </div>
       </div>
-      
-      </div>
-    </div>
-  </nav>
+    </nav>
 
-  <header class="bg-white shadow">
-    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      <h1 class="text-3xl font-bold text-gray-900">
-        Your Bin
-      </h1>
-      <div class="inline">
-      	
-      	<svg class="h-5 w-5 inline" id="copy_url" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-		  <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
-		  <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
-		</svg>
-		<input class="w-1/2" id="url" value=<%= url %>></input>
+    <header class="bg-white shadow">
+      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 p-8 container">
+        
+        <div class="w-1/2 inline-block vertical-center">
+          <h1 class="text-3xl font-bold text-gray-900 leading-relaxed">
+            Your Bin
+          </h1>
+          <div class="inline">
+            <svg class="h-6 w-6 inline" id="copy_url" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+              <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+            </svg>
+            <input class="w-3/4 text-xl leading-relaxed" id="url" value=<%= url %>></input>
+          </div>
+        </div>
+
+        <div class="inline-block vertical-center right-12">
+          <img class="closed-bin" src="/images/closed.png" style="width:80px">
+          <img class="open hidden" src="/images/open.png" style="width:80px">
+        </div>
+
       </div>
-    </div>
-  </header>
-</div>
+    </header>
+  </div>
  <div class="flex flex-col">
   <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">

@@ -1,4 +1,4 @@
-let btn = document.querySelector("button");
+let btn = document.querySelector(".create-bin");
 
 btn.addEventListener("click", async (event) => {
   let res = await fetch("/create", {

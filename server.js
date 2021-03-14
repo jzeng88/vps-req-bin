@@ -16,7 +16,7 @@ app.use('/scripts', express.static(__dirname + '/node_modules/socket.io/client-d
 const { Client } = require("pg");
 
 app.get("/", (req, res) => {
-  res.status(200).render('title');
+  res.status(200).render('home');
 });
 
 app.get("/:randomkey", async (req, res) => {
@@ -81,7 +81,8 @@ app.post("/r/:randomkey", async (req, res) => {
   ejs.renderFile(file, {request: result.rows[0]}, function(err, str){
     io.in(room).emit("message", str);
   });
-
+  
+  io.in(room).emit("animatebin");
   res.status(200).send('ASDF');
 });
 
